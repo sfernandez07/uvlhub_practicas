@@ -46,9 +46,9 @@ jobs:
       run: |
         pip list --outdated 
     
-    -name: Security audit
+    - name: Audit
       run: |
-        pip install pip-audit
+        pip install pip-Audit
         pip-audit
 
     - name: Upload coverage to Codacy
