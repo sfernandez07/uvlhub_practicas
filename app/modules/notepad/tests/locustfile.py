@@ -1,21 +1,41 @@
-from locust import HttpUser, TaskSet, task
-from core.environment.host import get_host_for_locust_testing
+from locust import HttpUser, task
+from core.locust.common import fake, get_csrf_token
 
 
-class NotepadBehavior(TaskSet):
+class NotepadBehavior(HttpUser):
+    contador = 0
+
     def on_start(self):
-        self.index()
+        self.signup()
 
     @task
-    def index(self):
-        response = self.client.get("/notepad")
+    def signup(self):
+        response = self.client.get("/signup")
+        csrf_token = get_csrf_token(response)
 
+        response = self.client.post(
+            "/signup", data={"email": fake.email(), "password": fake.password(), "csrf_token": csrf_token}
+        )
         if response.status_code != 200:
-            print(f"Notepad index failed: {response.status_code}")
+            print(f"Signup failed: {response.status_code}")
 
+    @task(2)
+    def load_notepad(self):
+        print("Cargando notepads")
+        response = self.client.get("/notepad")
+        if response.status_code == 200:
+            print("Lista cargada de manera correcta")
+        else:
+            print("Error en la carga de la lista")
 
-class NotepadUser(HttpUser):
-    tasks = [NotepadBehavior]
-    min_wait = 5000
-    max_wait = 9000
-    host = get_host_for_locust_testing()
+    @task(1)
+    def create_notepad(self):
+        title = NotepadBehavior.contador
+        NotepadBehavior.contador += 1
+        print("Creando nuevo notepad")
+        response = self.client.post("/notepad/create", data={"title": title, "body": "This is an example"})
+
+        if response.status_code in (200, 302):
+            print("Notepad creado de manera correcta")
+        else:
+            print("Error al crear el notepad")
