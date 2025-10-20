@@ -10,25 +10,35 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-
-class TestHola():
-    def setup_method(self, method):
-        self.driver = webdriver.Firefox()
-        self.vars = {}
+class TestHOla():
+  def setup_method(self, method):
+    self.driver = webdriver.Firefox()
+    self.vars = {}
   
-    def teardown_method(self, method):
-        self.driver.quit()
+  def teardown_method(self, method):
+    self.driver.quit()
   
-    def test_hola(self):
-        self.driver.get("http://127.0.0.1:5000/notepad/create")
-        self.driver.set_window_size(862, 1063)
-        self.driver.find_element(By.ID, "title").click()
-        self.driver.find_element(By.ID, "title").send_keys("Hola")
-        self.driver.find_element(By.ID, "body").send_keys("Hola")
-        self.driver.find_element(By.ID, "submit").click()
-        self.driver.find_element(By.LINK_TEXT, "Edit").click()
-        self.driver.find_element(By.ID, "title").click()
-        self.driver.find_element(By.ID, "title").send_keys("Adios")
-        self.driver.find_element(By.ID, "body").send_keys("Adios")
-        self.driver.find_element(By.ID, "submit").click()
-        self.driver.find_element(By.CSS_SELECTOR, "button").click()
+  def test_hOla(self):
+    self.driver.get("http://127.0.0.1:5000/")
+    self.driver.set_window_size(914, 1063)
+    self.driver.find_element(By.LINK_TEXT, "Login").click()
+    self.driver.find_element(By.ID, "email").click()
+    self.driver.find_element(By.ID, "email").send_keys("user1@example.com")
+    self.driver.find_element(By.ID, "password").click()
+    self.driver.find_element(By.ID, "password").send_keys("1234")
+    self.driver.find_element(By.ID, "submit").click()
+    self.driver.find_element(By.CSS_SELECTOR, ".h2:nth-child(1)").click()
+    self.driver.get("http://127.0.0.1:5000/notepad/create")
+    self.driver.find_element(By.ID, "title").click()
+    self.driver.find_element(By.ID, "title").send_keys("Hola")
+    self.driver.find_element(By.ID, "body").click()
+    self.driver.find_element(By.ID, "body").send_keys("Hola")
+    self.driver.find_element(By.ID, "submit").click()
+    self.driver.find_element(By.LINK_TEXT, "Edit").click()
+    self.driver.find_element(By.ID, "title").click()
+    self.driver.find_element(By.ID, "title").send_keys("Adios")
+    self.driver.find_element(By.ID, "body").click()
+    self.driver.find_element(By.ID, "body").send_keys("Adios")
+    self.driver.find_element(By.ID, "submit").click()
+    self.driver.find_element(By.CSS_SELECTOR, "button").click()
+  
